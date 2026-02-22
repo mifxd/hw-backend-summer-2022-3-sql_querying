@@ -18,15 +18,7 @@ FROM flights ORDER BY duration LIMIT 5
 # количество упоминаний которых меньше 50
 # В ответе должно быть 2 колонки [flight_no, count]
 TASK_2_QUERY = """
-SELECT 
-    f.flight_no, 
-    COUNT(*) AS count
-FROM flights f
-JOIN airports_data dep ON f.departure_airport = dep.airport_code
-JOIN airports_data arr ON f.arrival_airport = arr.airport_code
-WHERE dep.timezone = arr.timezone
-GROUP BY f.flight_no
-ORDER BY count DESC, f.flight_no
+SELECT flight_no, COUNT(*) as count FROM flights GROUP BY flight_no HAVING COUNT(*) < 50 ORDER BY count DESC LIMIT 3
 """
 #  flight_no | count
 # -----------+-------
@@ -37,7 +29,11 @@ ORDER BY count DESC, f.flight_no
 # Вывести число перелетов внутри одной таймзоны
 # Нужно вывести 1 значение в колонке count
 TASK_3_QUERY = """
-SELECT COUNT(*) as count FROM flights GROUP BY timezone
+SELECT COUNT(*) AS count
+FROM flights f
+JOIN airports_data dep ON f.departure_airport = dep.airport_code
+JOIN airports_data arr ON f.arrival_airport = arr.airport_code
+WHERE dep.timezone = arr.timezone;
 """
 #  count
 # --------
